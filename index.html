@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INF_Smart | Intelligent Digital Wall Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body data-theme="beige-gold">
+
+    <!-- Main Dashboard Container -->
+    <div class="inf-dashboard-container">
+
+        <!-- Top Header Bar -->
+        <header class="inf-header">
+            <div class="brand-logo">
+                <div class="particles-container" id="header-particles"></div>
+                <div class="infinity-3d">∞</div>
+                <h1>INF_<span>Smart</span></h1>
+            </div>
+            <div class="header-right-cluster">
+                <div class="header-clock" id="header-clock">
+                    <span class="header-clock-time" id="mini-time">00:00 AM</span>
+                    <span class="header-clock-divider">·</span>
+                    <span class="header-clock-date" id="mini-date">Loading...</span>
+                </div>
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">System Secure & Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Central Dynamic Viewport with Scroll Support -->
+        <main class="inf-viewport" id="main-viewport">
+            
+            <!-- 1. Home Section -->
+            <section id="home" class="view-section active">
+                <div class="bento-grid-container">
+                    <div class="bento-card sanctuary-card">
+                        <div class="sanctuary-header">
+                            <span class="badge-status">Sanctuary Active</span>
+                            <h3 class="sanctuary-title">Ambient Equilibrium</h3>
+                        </div>
+                        <p class="sanctuary-desc">All climate and atmospheric systems are harmonized for maximum psychological comfort.</p>
+                        <div class="sanctuary-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Temperature</span>
+                                <span class="metric-val">22.5°C</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Air Quality</span>
+                                <span class="metric-val">Pristine</span>
+                            </div>
+                        </div>
+                        <button class="zen-mode-btn" id="zen-trigger">
+                            <span class="zen-icon"><i data-lucide="sparkles"></i></span>
+                            <span class="zen-text">Activate Zen Meditation Mode</span>
+                        </button>
+                    </div>
+
+                    <div class="bento-right-column">
+                        <div class="bento-card quick-toggles-card">
+                            <h4 class="card-subtitle">Quick Toggles</h4>
+                            <div class="toggles-grid">
+                                <button class="quick-toggle-item active" data-device="light-1">
+                                    <span class="toggle-icon"><i data-lucide="lightbulb"></i></span>
+                                    <span class="toggle-name">Main Living Light</span>
+                                    <span class="toggle-state">ON</span>
+                                </button>
+                                <button class="quick-toggle-item" data-device="light-2">
+                                    <span class="toggle-icon"><i data-lucide="lamp-desk"></i></span>
+                                    <span class="toggle-name">Ambient Strip</span>
+                                    <span class="toggle-state">OFF</span>
+                                </button>
+                                <button class="quick-toggle-item" data-device="plug-1">
+                                    <span class="toggle-icon"><i data-lucide="plug"></i></span>
+                                    <span class="toggle-name">Smart Outlet</span>
+                                    <span class="toggle-state">OFF</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bento-card weather-card">
+                            <div class="weather-info">
+                                <span class="weather-icon"><i data-lucide="cloud-sun"></i></span>
+                                <div>
+                                    <h4 class="weather-location">Erbil, Kurdistan</h4>
+                                    <p class="weather-cond">Pleasant Evening Breeze</p>
+                                </div>
+                            </div>
+                            <div class="weather-temp">19°C</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Smart Devices Section -->
+            <section id="devices" class="view-section">
+                <div class="devices-dashboard-container">
+                    <div class="devices-top-bar">
+                        <div class="ecosystem-info">
+                            <span class="badge-status">IoT Ecosystem</span>
+                            <h3>Smart Command Center</h3>
+                        </div>
+                        <div class="global-power-widget">
+                            <span class="power-icon"><i data-lucide="zap"></i></span>
+                            <div class="power-data">
+                                <span class="power-label">Total Power Draw</span>
+                                <span class="power-val" id="total-power">0.00 W</span>
+                            </div>
+                        </div>
+                        <div class="global-actions">
+                            <button class="master-btn off-btn" id="turn-all-off">Turn All OFF</button>
+                            <button class="master-btn on-btn" id="turn-all-on">Turn All ON</button>
+                        </div>
+                    </div>
+
+                    <div class="devices-grid">
+                        <div class="device-card active" data-device-id="device-1" data-wattage="4.62">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="lightbulb"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" checked class="dev-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name editable-name" contenteditable="true" title="Click to rename">Living Room Main</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text">Active</span>
+                                    <span class="device-watt-badge">4.62 W</span>
+                                </div>
+                                <div class="brightness-control">
+                                    <div class="slider-labels">
+                                        <span>Brightness</span>
+                                        <span class="slider-val">90%</span>
+                                    </div>
+                                    <input type="range" min="10" max="100" value="90" class="mini-slider brightness-slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="device-card active" data-device-id="device-2" data-wattage="4.62">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="lamp-desk"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" checked class="dev-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name editable-name" contenteditable="true" title="Click to rename">Audio LED Strip</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text">Sound Reactive</span>
+                                    <span class="device-watt-badge">4.62 W</span>
+                                </div>
+                                <div class="brightness-control">
+                                    <div class="slider-labels">
+                                        <span>Intensity</span>
+                                        <span class="slider-val">85%</span>
+                                    </div>
+                                    <input type="range" min="10" max="100" value="85" class="mini-slider brightness-slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="device-card" data-device-id="device-3" data-wattage="10.94">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="plug"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" class="dev-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name editable-name" contenteditable="true" title="Click to rename">Smart Outlet</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text">Standby</span>
+                                    <span class="device-watt-badge">10.94 W</span>
+                                </div>
+                                <div class="outlet-info-row">
+                                    <span>Status: Ready</span>
+                                    <span>220V AC</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="device-card active" data-device-id="device-4" data-wattage="15.00">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="monitor"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" checked class="dev-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name">INF Wall Display</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text">API Hook Ready</span>
+                                    <span class="device-watt-badge">15.0 W</span>
+                                </div>
+                                <div class="display-hook-status">
+                                    <span class="hook-dot"></span> Link: Standby
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="device-card cinematic-ac-card" data-device-id="device-5" data-wattage="0.00">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="snowflake"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" class="dev-checkbox ac-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name">Climate Control (AC)</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text ac-status">Offline</span>
+                                    <span class="device-watt-badge ac-watt">0.0 W</span>
+                                </div>
+                                <div class="ac-controls-row">
+                                    <div class="ac-temp-display"><span class="ac-temp-val">0</span>°C</div>
+                                    <div class="ac-buttons-group">
+                                        <button class="ac-btn" disabled>-</button>
+                                        <button class="ac-btn" disabled>+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="device-card" data-device-id="device-6" data-wattage="0.00">
+                            <div class="device-card-header">
+                                <div class="icon-3d-box"><i data-lucide="sparkles"></i></div>
+                                <label class="switch-toggle">
+                                    <input type="checkbox" class="dev-checkbox">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="device-card-body">
+                                <h4 class="device-name">Ambient Mood Lighting</h4>
+                                <div class="device-meta-row">
+                                    <span class="device-status-text">Ambient Off</span>
+                                    <span class="device-watt-badge">0.0 W</span>
+                                </div>
+                                <div class="mood-palette-row">
+                                    <span class="mood-dot gold active"></span>
+                                    <span class="mood-dot obsidian"></span>
+                                    <span class="mood-dot amethyst"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Security Section (Real Camera Images) -->
+            <section id="security" class="view-section">
+                <div class="security-dashboard-container">
+                    <div class="security-top-bar">
+                        <div class="ecosystem-info">
+                            <span class="badge-status security-badge">Perimeter Defense</span>
+                            <h3>Security & Surveillance Center</h3>
+                        </div>
+                        <div class="global-power-widget security-status-widget">
+                            <span class="power-icon"><i data-lucide="shield-check"></i></span>
+                            <div class="power-data">
+                                <span class="power-label">System Status</span>
+                                <span class="power-val secure-text">SECURED (0 Threats)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-bento-grid">
+                        <div class="security-card main-cam-card">
+                            <div class="cam-header">
+                                <div class="cam-title-group">
+                                    <span class="rec-dot"></span>
+                                    <h4 id="cam-title-text">CAM-01: Main Entrance</h4>
+                                </div>
+                                <div class="cam-actions">
+                                    <button class="cam-switch-btn" id="switch-cam-btn">Switch Feed</button>
+                                </div>
+                            </div>
+
+                            <!-- Real Camera Viewport -->
+                            <div class="cam-viewport" id="cam-viewport-box">
+                                <div class="scanner-line"></div>
+                                <div class="cam-overlay-text">LIVE STREAM • 1080P INF-SECURE</div>
+                                <div class="cam-grid-overlay"></div>
+                            </div>
+
+                            <div class="cam-footer">
+                                <span class="cam-meta">Motion Sensors: Active</span>
+                                <span class="cam-meta">Night Vision: Auto</span>
+                            </div>
+                        </div>
+
+                        <div class="security-right-column">
+                            <div class="security-card access-card">
+                                <h4 class="security-card-title">Master Access Control</h4>
+                                <div class="locks-list">
+                                    <div class="lock-item" data-lock="front-door">
+                                        <div class="lock-info">
+                                            <span class="lock-icon"><i data-lucide="lock"></i></span>
+                                            <div>
+                                                <h5>Front Main Door</h5>
+                                                <span class="lock-sub">Locked • Auto-securing</span>
+                                            </div>
+                                        </div>
+                                        <button class="lock-toggle-btn unlocked-state" id="lock-btn-1">Locked</button>
+                                    </div>
+                                    <div class="lock-item" data-lock="smart-window">
+                                        <div class="lock-info">
+                                            <span class="lock-icon"><i data-lucide="panels-top-left"></i></span>
+                                            <div>
+                                                <h5>Perimeter Windows</h5>
+                                                <span class="lock-sub">Sealed • Glass Break Sensor</span>
+                                            </div>
+                                        </div>
+                                        <button class="lock-toggle-btn unlocked-state" id="lock-btn-2">Locked</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="security-card emergency-card" id="emergency-card-box">
+                                <div class="emergency-content">
+                                    <div class="emergency-icon-box"><i data-lucide="siren"></i></div>
+                                    <div>
+                                        <h4 class="security-card-title">Emergency Protocol</h4>
+                                        <p class="emergency-desc">Initiate complete perimeter lockdown & silent alarm.</p>
+                                    </div>
+                                </div>
+                                <button class="lockdown-btn" id="lockdown-trigger">Activate Lockdown</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Music & Soundscapes Section (Audiophile Command Center) -->
+            <!-- 4. Music & Soundscapes Section (Audiophile Command Center) -->
+            <section id="music" class="view-section">
+                <div class="music-dashboard-container">
+                    <div class="music-top-bar">
+                        <div class="ecosystem-info">
+                            <span class="badge-status music-badge">Acoustic Engine</span>
+                            <h3>Soundscapes & Music AI Hub</h3>
+                        </div>
+                        <div class="global-power-widget music-status-widget">
+                            <span class="power-icon"><i data-lucide="music-2"></i></span>
+                            <div class="power-data">
+                                <span class="power-label">Audio Stream</span>
+                                <span class="power-val music-live-text">High-Res Spatial</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="music-bento-grid">
+                        <!-- Left Major Card: Active Audio Deck & Refined Waveform -->
+                        <div class="music-card main-player-card">
+                            <div class="player-header">
+                                <div class="album-art-box">
+                                    <span class="vinyl-icon"><i data-lucide="disc-3"></i></span>
+                                </div>
+                                <div class="track-info">
+                                    <span class="track-kicker"><i></i> NOW PLAYING</span>
+                                    <h4 id="current-track-title">Cinematic Piano & Solitude</h4>
+                                    <span id="current-artist-name">Music AI Studio</span>
+                                    <div class="track-meta"><span>LOSSLESS AUDIO</span><span>·</span><span>SPATIAL SOUND</span></div>
+                                </div>
+                            </div>
+
+                            <div class="player-progress-wrap">
+                                <div class="player-progress-track"><span class="player-progress-fill"></span><span class="player-progress-knob"></span></div>
+                                <div class="player-time-row"><span>02:18</span><span>05:42</span></div>
+                            </div>
+                            <!-- Refined Fine Waveform Bars -->
+                            <div class="audio-waveform-container" id="waveform-bars">
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                            </div>
+
+                            <!-- Hidden YouTube Iframe for Real Audio Streaming -->
+                            <div id="youtube-player-container" style="display:none;"></div>
+
+                            <!-- Player Controls -->
+                            <div class="player-controls-row">
+                                <button class="player-ctrl-btn" id="prev-track-btn" title="Previous"><i data-lucide="skip-back"></i></button>
+                                <button class="player-ctrl-btn play-main-btn" id="play-pause-btn" title="Play / Pause"><i data-lucide="play"></i></button>
+                                <button class="player-ctrl-btn" id="next-track-btn" title="Next"><i data-lucide="skip-forward"></i></button>
+                                <div class="volume-slider-box">
+                                    <span class="volume-icon"><i data-lucide="volume-2"></i></span>
+                                    <input type="range" min="0" max="100" value="75" class="mini-slider volume-slider" id="volume-range">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column Container -->
+                        <div class="music-right-column">
+                            <!-- Top Right: 3 Mood Profiles (Piano, Violin, Oriental Ambient) -->
+                            <div class="music-card mood-profiles-card">
+                                <h4 class="security-card-title">Psychological Soundscapes</h4>
+                                <div class="mood-buttons-grid">
+                                    <button class="mood-preset-btn active" data-mood="piano" data-yt="4Tr0otuiQuU"><i data-lucide="piano"></i> Melancholic Piano</button>
+                                    <button class="mood-preset-btn" data-mood="violin" data-yt="5qap5aO4i9A"><i data-lucide="music"></i> Cinematic Violin</button>
+                                    <button class="mood-preset-btn" data-mood="ambient" data-yt="jfKfPfyJRdk"><i data-lucide="leaf"></i> Deep Oriental Ambient</button>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Right: Equalizer & Ambient Autoplay Toggle -->
+                            <div class="music-card spatial-card">
+                                <div class="spatial-info-row">
+                                    <div>
+                                        <h4 class="security-card-title" style="margin-bottom: 2px;">Auto Background Audio</h4>
+                                        <span class="lock-sub">Play soft ambiance on section enter</span>
+                                    </div>
+                                    <label class="switch-toggle">
+                                        <input type="checkbox" id="auto-ambient-toggle" checked class="spatial-checkbox">
+                                        <span class="slider-round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Settings Section -->
+            <!-- 5. Settings Section (System Customization Hub) -->
+            <section id="settings" class="view-section">
+                <div class="settings-dashboard-container">
+                    
+                    <!-- Top Settings Header Bar -->
+                    <div class="settings-top-bar">
+                        <div class="ecosystem-info">
+                            <span class="badge-status settings-badge">System Preferences</span>
+                            <h3>Customization & Aesthetics Hub</h3>
+                        </div>
+                        <div class="global-power-widget settings-status-widget">
+                            <span class="power-icon"><i data-lucide="settings-2"></i></span>
+                            <div class="power-data">
+                                <span class="power-label">INF Engine</span>
+                                <span class="power-val settings-active-text">v2.4 Pro Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Bento Grid -->
+                    <div class="settings-bento-grid">
+                        
+                        <!-- 1. Left Major Card: Visual Themes & Backgrounds -->
+                        <div class="settings-card">
+                            <h4 class="settings-section-title">Atmospheric Themes & Wallpapers</h4>
+                            <p class="settings-sub-desc">Select your primary visual atmosphere and cinematic backdrop.</p>
+                            
+                            <div class="theme-options-grid">
+                                <button class="theme-select-btn active" data-theme="beige-gold">
+                                    <span class="theme-color-dot" style="background: #D4AF37;"></span>
+                                    <div>
+                                        <span class="theme-name">Beige Gold (Default)</span>
+                                        <span class="theme-desc">Warm royal elegance</span>
+                                    </div>
+                                </button>
+
+                                <button class="theme-select-btn" data-theme="serenity-blue">
+                                    <span class="theme-color-dot" style="background: #63B3ED;"></span>
+                                    <div>
+                                        <span class="theme-name">Serenity Blue</span>
+                                        <span class="theme-desc">Quiet blue atmosphere</span>
+                                    </div>
+                                </button>
+
+                                <button class="theme-select-btn" data-theme="midnight-amethyst">
+                                    <span class="theme-color-dot" style="background: #C5A059;"></span>
+                                    <div>
+                                        <span class="theme-name">Midnight Amethyst</span>
+                                        <span class="theme-desc">Smoky violet after dark</span>
+                                    </div>
+                                </button>
+
+                                <button class="theme-select-btn" data-theme="obsidian-noir">
+                                    <span class="theme-color-dot" style="background:linear-gradient(135deg,#17191F,#A7AAB5);"></span>
+                                    <span><span class="theme-name">Obsidian Noir</span><span class="theme-desc">Deep graphite · platinum</span></span>
+                                </button>
+                                <button class="theme-select-btn" data-theme="deep-ocean">
+                                    <span class="theme-color-dot" style="background:linear-gradient(135deg,#071A2D,#287D9B);"></span>
+                                    <span><span class="theme-name">Deep Ocean</span><span class="theme-desc">Midnight navy · teal</span></span>
+                                </button>
+                                <button class="theme-select-btn" data-theme="silent-emerald">
+                                    <span class="theme-color-dot" style="background: #48BB78;"></span>
+                                    <div>
+                                        <span class="theme-name">Silent Emerald</span>
+                                        <span class="theme-desc">Emerald forest atmosphere</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Right Column Container -->
+                        <div class="settings-right-column">
+                            
+                            <!-- Top Right: Glass Blur Levels (Independent of Zen Mode) -->
+                            <div class="settings-card">
+                                <h4 class="settings-section-title">Glass Blur Intensity</h4>
+                                <div class="blur-buttons-grid">
+                                    <button class="blur-preset-btn active" data-blur="default">High Blur · 90%</button>
+                                    <button class="blur-preset-btn" data-blur="medium">Medium Blur · 50%</button>
+                                    <button class="blur-preset-btn" data-blur="clear">Zero Blur · 0%</button>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Right: Independent Accent Color Picker -->
+                            <div class="settings-card">
+                                <h4 class="settings-section-title">Accent Color & Glow</h4>
+                                <div class="accent-colors-row">
+                                    <button class="accent-color-btn active" data-accent="#D4AF37" title="Royal Gold" style="background: #D4AF37;"></button>
+                                    <button class="accent-color-btn" data-accent="#63B3ED" title="Ice Blue" style="background: #63B3ED;"></button>
+                                    <button class="accent-color-btn" data-accent="#48BB78" title="Emerald Green" style="background: #48BB78;"></button>
+                                    <button class="accent-color-btn" data-accent="#C77D91" title="Rose Quartz" style="background: #C77D91;"></button>
+                                    <button class="accent-color-btn" data-accent="#A9B7C8" title="Arctic Silver" style="background: #A9B7C8;"></button>
+                                    <button class="accent-color-btn" data-accent="#45C6B0" title="Neon Teal" style="background: #45C6B0;"></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 6. More Section (Advanced Utilities & Micro-Widgets) -->
+            <section id="more" class="view-section">
+                <div class="more-dashboard-container">
+                    
+                    <!-- Top More Header Bar -->
+                    <div class="more-top-bar">
+                        <div class="ecosystem-info">
+                            <span class="badge-status more-badge">Extended Utilities</span>
+                            <h3>Advanced System Diagnostics & Tools</h3>
+                        </div>
+                        <div class="global-power-widget more-status-widget">
+                            <span class="power-icon"><i data-lucide="wrench"></i></span>
+                            <div class="power-data">
+                                <span class="power-label">Node Health</span>
+                                <span class="power-val more-active-text">100% Optimized</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- More Bento Grid -->
+                    <div class="more-bento-grid">
+                        
+                        <!-- 1. Left Major Card: System Diagnostics & Live Metrics -->
+                        <div class="more-card">
+                            <div class="diag-header">
+                                <h4 class="settings-section-title">Hardware & Node Performance</h4>
+                                <button class="diag-run-btn" id="run-diag-btn">Run Diagnostics</button>
+                            </div>
+                            <p class="settings-sub-desc">Real-time simulation of hardware resource allocation and local IoT bridge nodes.</p>
+                            
+                            <div class="metrics-grid">
+                                <div class="metric-box">
+                                    <span class="metric-title">CPU Core Load</span>
+                                    <span class="metric-number" id="cpu-load-val">14.2%</span>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 14%;"></div></div>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-title">Memory Allocation</span>
+                                    <span class="metric-number" id="mem-load-val">2.4 GB / 8 GB</span>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 30%;"></div></div>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-title">Network Latency (Ping)</span>
+                                    <span class="metric-number">12 ms</span>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 15%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Right Column Container -->
+                        <div class="more-right-column">
+                            
+                            <!-- Top Right: Activity Log & Quick Alerts -->
+                            <div class="more-card activity-log-card">
+                                <h4 class="settings-section-title">Recent Activity Feed</h4>
+                                <div class="activity-feed-list">
+                                    <div class="activity-item">
+                                        <span class="act-dot"></span>
+                                        <div class="act-text">
+                                            <span>System booted successfully</span>
+                                            <span class="act-time">Just now</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <span class="act-dot"></span>
+                                        <div class="act-text">
+                                            <span>Security perimeter secured</span>
+                                            <span class="act-time">2 mins ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <span class="act-dot"></span>
+                                        <div class="act-text">
+                                            <span>Lighting cluster synchronized</span>
+                                            <span class="act-time">5 mins ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Right: Power Saver & Storage Reset -->
+                            <div class="more-card utilities-card">
+                                <div class="spatial-info-row" style="margin-bottom: 12px;">
+                                    <div>
+                                        <h4 class="settings-section-title" style="margin-bottom: 2px;">Eco Power Saver</h4>
+                                        <span class="lock-sub">Auto-throttle unused IoT nodes</span>
+                                    </div>
+                                    <label class="switch-toggle">
+                                        <input type="checkbox" id="eco-mode-toggle" class="spatial-checkbox">
+                                        <span class="slider-round"></span>
+                                    </label>
+                                </div>
+                                <button class="reset-cache-btn" id="reset-storage-btn">Reset Local Settings & Cache</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation & Collapsible Dock -->
+        <div class="nav-dock-wrapper">
+            <button class="nav-toggle-btn" id="nav-toggle" title="Toggle Navigation">
+                <span class="arrow-icon"><i data-lucide="chevron-left"></i></span>
+            </button>
+
+            <nav class="inf-nav-bar" id="inf-nav">
+                <button class="nav-item active" data-target="home">
+                    <span class="nav-icon"><i data-lucide="house"></i></span>
+                    <span class="nav-label">Home</span>
+                </button>
+                <button class="nav-item" data-target="devices">
+                    <span class="nav-icon"><i data-lucide="lightbulb"></i></span>
+                    <span class="nav-label">Devices</span>
+                </button>
+                <button class="nav-item" data-target="security">
+                    <span class="nav-icon"><i data-lucide="shield-check"></i></span>
+                    <span class="nav-label">Security</span>
+                </button>
+                <button class="nav-item" data-target="music">
+                    <span class="nav-icon"><i data-lucide="music-2"></i></span>
+                    <span class="nav-label">Music</span>
+                </button>
+                <button class="nav-item" data-target="settings">
+                    <span class="nav-icon"><i data-lucide="settings-2"></i></span>
+                    <span class="nav-label">Settings</span>
+                </button>
+                <button class="nav-item" data-target="more">
+                    <span class="nav-icon"><i data-lucide="sparkles"></i></span>
+                    <span class="nav-label">More</span>
+                </button>
+            </nav>
+
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+    <script>window.addEventListener('load',()=>{if(window.lucide)window.lucide.createIcons();});</script>
+</body>
+</html>

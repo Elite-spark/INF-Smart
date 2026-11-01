@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // relay2 = Shelly 2.5 relay 0 (MIT Web5)
     // relay3 = Shelly 2.5 relay 1 (MIT Web6)
     const bridgeDevices = {
-        light1: { quickKey: 'light-1', cardId: 'device-1' },
-        relay2: { quickKey: 'light-2', cardId: 'device-2' },
-        relay3: { quickKey: 'plug-1', cardId: 'device-3' }
+        light1: { quickKey: 'plug-1', cardId: 'device-3' }, // Shelly 1PM Mini Gen 3 -> Smart Outlet
+        relay2: { quickKey: 'light-1', cardId: 'device-1' }, // Shelly 2.5 relay 0 -> Main Living Light
+        relay3: { quickKey: 'light-2', cardId: 'device-2' }  // Shelly 2.5 relay 1 -> Ambient Strip
     };
     const deviceStates = { light1: null, relay2: null, relay3: null };
     let commandSequence = 0;
@@ -105,7 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
             lastBridgeValue = raw;
             const message = JSON.parse(raw);
             if (message.type !== 'state') return;
-            if (typeof message.device === 'string' && typeof message.ison === 'boolean') {
+            // Preferred format: one atomic snapshot for all three relays.
+            let receivedAnyState = false;
+            ['light1', 'relay2', 'relay3'].forEach(id => {
+                if (typeof message[id] === 'boolean') {
+                    updateDeviceState(id, message[id]);
+                    receivedAnyState = true;
+                }
+            });
+            // Backward compatibility with the current MIT blocks (one relay per message).
+            if (!receivedAnyState && typeof message.device === 'string' && typeof message.ison === 'boolean') {
                 updateDeviceState(message.device, message.ison);
             }
         } catch (error) {
@@ -159,6 +168,43 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRealWeather();
     setInterval(updateRealWeather, 1800000);
 
+
+    // --- Music controls: responsive UI state (streaming provider hookup is separate) ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+    }
+    if (playPauseBtn) playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            setMusicPlaying(false);
+        });
+    });
+    const autoAmbientToggle = document.getElementById('auto-ambient-toggle');
+    if (autoAmbientToggle) autoAmbientToggle.addEventListener('change', () => {
+        autoAmbientToggle.dataset.enabled = String(autoAmbientToggle.checked);
+    });
+    const previousTrackBtn = document.getElementById('prev-track-btn');
+    const nextTrackBtn = document.getElementById('next-track-btn');
+    if (previousTrackBtn) previousTrackBtn.addEventListener('click', () => {
+        const active = document.querySelector('.mood-preset-btn.active');
+        const items = [...document.querySelectorAll('.mood-preset-btn')];
+        if (items.length) items[(Math.max(0, items.indexOf(active) - 1) + items.length) % items.length].click();
+    });
+    if (nextTrackBtn) nextTrackBtn.addEventListener('click', () => {
+        const items = [...document.querySelectorAll('.mood-preset-btn')];
+        const active = items.indexOf(document.querySelector('.mood-preset-btn.active'));
+        if (items.length) items[(active + 1) % items.length].click();
+    });
 
     // --- 5. Zen Meditation Mode Trigger ---
     const zenTrigger = document.getElementById('zen-trigger');
@@ -319,9 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
             checkbox.addEventListener('change', () => {
                 const isChecked = checkbox.checked;
                 const targetDeviceKey = ({
-                    'device-1': 'light1',
-                    'device-2': 'relay2',
-                    'device-3': 'relay3'
+                    'device-1': 'relay2',
+                    'device-2': 'relay3',
+                    'device-3': 'light1'
                 })[deviceId];
 
                 if (targetDeviceKey) {

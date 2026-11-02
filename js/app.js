@@ -326,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
             totalPowerElement.textContent = `${totalWatts.toFixed(2)} W`;
         }
     }
-    // اجعل الدالة متاحة عامة ليراها نظام جلب الحالة
     window.calculateTotalPower = calculateTotalPower;
 
     deviceCards.forEach(card => {
@@ -360,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ربط تفاعل الـ Checkbox في قسم الأجهزة (Devices) بأجهزة شيلي الحقيقية أيضاً!
+        // ربط تفاعل الـ Checkbox في قسم الأجهزة بأجهزة شيلي الحقيقية أو الأجهزة الوهمية بدقة
         if (checkbox) {
             checkbox.addEventListener('change', () => {
                 const isChecked = checkbox.checked;
@@ -371,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })[deviceId];
 
                 if (targetDeviceKey) {
-                    // Send the requested state through MIT; the next Shelly state response confirms it.
+                    // إرسال الأمر مباشرة عبر الجسر مثل الرئيسية تماماً
                     sendBridgeCommand(targetDeviceKey, isChecked ? 'on' : 'off');
                 } else {
                     // للأجهزة الوهمية الأخرى (مثل الـ AC أو Ambient)

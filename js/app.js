@@ -335,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusText = card.querySelector('.device-status-text');
         const brightnessSlider = card.querySelector('.brightness-slider');
         const sliderValLabel = card.querySelector('.slider-val');
+        const switchToggle = card.querySelector('.switch-toggle');
 
         if (nameElement) {
             const savedName = localStorage.getItem(`inf_device_name_${deviceId}`);
@@ -359,31 +360,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ربط تفاعل بطاقات الأجهزة بأجهزة شيلي الحقيقية (نفس منطق الرئيسية تماماً)
+        // ربط تفاعل مفتاح التبديل بأجهزة شيلي الحقيقية أو الأجهزة الوهمية بدقة تامة
         const targetDeviceKey = ({
             'device-1': 'relay2',
             'device-2': 'relay3',
             'device-3': 'light1'
         })[deviceId];
 
-        if (targetDeviceKey) {
-            // جعل البطاقة أو الـ checkbox يستجيب للنقر ويقود الحالة بناءً على deviceStates الحقيقي
-            const triggerElement = card.querySelector('.dev-switch') || card.querySelector('.dev-checkbox') || card;
-            
-            triggerElement.addEventListener('click', (e) => {
-                // منع التداخل إذا كان النقر على الـ checkbox نفسه لكي لا يحدث تكرار في الحدث
-                if (e.target !== checkbox && checkbox) {
-                    // تحديث الـ checkbox يدويئاً انعكاساً للنقر
-                }
-                
-                // تحديد الحالة الحالية للجهاز تماماً مثل الرئيسية
+        if (switchToggle && targetDeviceKey) {
+            // للأجهزة الحقيقية (شيلي): النقر على مفتاح التبديل يرسل الأمر مباشرة مثل الرئيسية
+            switchToggle.addEventListener('click', (e) => {
+                e.preventDefault(); // منع السلوك الافتراضي المتضارب للـ label
                 const currentState = deviceStates[targetDeviceKey] === null ? checkbox.checked : deviceStates[targetDeviceKey];
                 const actionToSend = currentState ? 'off' : 'on';
                 
+                // إرسال الأمر للجسر البرمجي
                 sendBridgeCommand(targetDeviceKey, actionToSend);
             });
         } else if (checkbox) {
-            // للأجهزة الوهمية الأخرى (مثل الـ AC أو Ambient)
+            // للأجهزة الوهمية الأخرى (مثل الـ AC أو Ambient أو Wall Display)
             checkbox.addEventListener('change', () => {
                 const isChecked = checkbox.checked;
                 if (isChecked) {

@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetInactivityTimer();
 
 
-    // --- 9. Synchronized Device Names & Smart Devices Logic (Devices Section) ---
+// --- 9. Synchronized Device Names & Smart Devices Logic (Devices Section) ---
     const deviceCards = document.querySelectorAll('.device-card');
     const totalPowerElement = document.getElementById('total-power');
 
@@ -359,44 +359,55 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // ربط تفاعل الـ Checkbox في قسم الأجهزة بأجهزة شيلي الحقيقية أو الأجهزة الوهمية بدقة
-        if (checkbox) {
+        // ربط تفاعل بطاقات الأجهزة بأجهزة شيلي الحقيقية (نفس منطق الرئيسية تماماً)
+        const targetDeviceKey = ({
+            'device-1': 'relay2',
+            'device-2': 'relay3',
+            'device-3': 'light1'
+        })[deviceId];
+
+        if (targetDeviceKey) {
+            // جعل البطاقة أو الـ checkbox يستجيب للنقر ويقود الحالة بناءً على deviceStates الحقيقي
+            const triggerElement = card.querySelector('.dev-switch') || card.querySelector('.dev-checkbox') || card;
+            
+            triggerElement.addEventListener('click', (e) => {
+                // منع التداخل إذا كان النقر على الـ checkbox نفسه لكي لا يحدث تكرار في الحدث
+                if (e.target !== checkbox && checkbox) {
+                    // تحديث الـ checkbox يدويئاً انعكاساً للنقر
+                }
+                
+                // تحديد الحالة الحالية للجهاز تماماً مثل الرئيسية
+                const currentState = deviceStates[targetDeviceKey] === null ? checkbox.checked : deviceStates[targetDeviceKey];
+                const actionToSend = currentState ? 'off' : 'on';
+                
+                sendBridgeCommand(targetDeviceKey, actionToSend);
+            });
+        } else if (checkbox) {
+            // للأجهزة الوهمية الأخرى (مثل الـ AC أو Ambient)
             checkbox.addEventListener('change', () => {
                 const isChecked = checkbox.checked;
-                const targetDeviceKey = ({
-                    'device-1': 'relay2',
-                    'device-2': 'relay3',
-                    'device-3': 'light1'
-                })[deviceId];
-
-                if (targetDeviceKey) {
-                    // إرسال الأمر مباشرة عبر الجسر مثل الرئيسية تماماً
-                    sendBridgeCommand(targetDeviceKey, isChecked ? 'on' : 'off');
-                } else {
-                    // للأجهزة الوهمية الأخرى (مثل الـ AC أو Ambient)
-                    if (isChecked) {
-                        card.classList.add('active');
-                        if (statusText) statusText.textContent = 'Active • Operational';
-                        if (card.classList.contains('cinematic-ac-card')) {
-                            const tempDisplay = card.querySelector('.ac-temp-val');
-                            const acWatt = card.querySelector('.ac-watt');
-                            if (tempDisplay) tempDisplay.textContent = '22';
-                            if (acWatt) acWatt.textContent = '850.0 W';
-                            card.setAttribute('data-wattage', '850.0');
-                        }
-                    } else {
-                        card.classList.remove('active');
-                        if (statusText) statusText.textContent = 'Standby • Offline';
-                        if (card.classList.contains('cinematic-ac-card')) {
-                            const tempDisplay = card.querySelector('.ac-temp-val');
-                            const acWatt = card.querySelector('.ac-watt');
-                            if (tempDisplay) tempDisplay.textContent = '0';
-                            if (acWatt) acWatt.textContent = '0.0 W';
-                            card.setAttribute('data-wattage', '0.00');
-                        }
+                if (isChecked) {
+                    card.classList.add('active');
+                    if (statusText) statusText.textContent = 'Active • Operational';
+                    if (card.classList.contains('cinematic-ac-card')) {
+                        const tempDisplay = card.querySelector('.ac-temp-val');
+                        const acWatt = card.querySelector('.ac-watt');
+                        if (tempDisplay) tempDisplay.textContent = '22';
+                        if (acWatt) acWatt.textContent = '850.0 W';
+                        card.setAttribute('data-wattage', '850.0');
                     }
-                    calculateTotalPower();
+                } else {
+                    card.classList.remove('active');
+                    if (statusText) statusText.textContent = 'Standby • Offline';
+                    if (card.classList.contains('cinematic-ac-card')) {
+                        const tempDisplay = card.querySelector('.ac-temp-val');
+                        const acWatt = card.querySelector('.ac-watt');
+                        if (tempDisplay) tempDisplay.textContent = '0';
+                        if (acWatt) acWatt.textContent = '0.0 W';
+                        card.setAttribute('data-wattage', '0.00');
+                    }
                 }
+                calculateTotalPower();
             });
         }
 

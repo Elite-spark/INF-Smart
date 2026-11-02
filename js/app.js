@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ربط تفاعل الـ Checkbox في قسم الأجهزة (Devices) بأجهزة شيلي الحقيقية أيضاً!
         if (checkbox) {
-            checkbox.addEventListener('change', () => {
+            checkbox.addEventListener('click', () => {
                 const isChecked = checkbox.checked;
                 const targetDeviceKey = ({
                     'device-1': 'relay2',

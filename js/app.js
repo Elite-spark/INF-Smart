@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const backgroundAudio = new Audio();
+    backgroundAudio.loop = true;
     // --- 1. SPA Navigation Router ---
     const navButtons = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.view-section');
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 4. Real Weather API Integration ---
     async function updateRealWeather() {
-        const apiKey = 'YOUR_OPENWEATHER_API_KEY'; 
+        const apiKey = 'b2ad66f397450377d3123635c5d28737';
         const city = 'Erbil';
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
@@ -173,20 +175,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const playPauseBtn = document.getElementById('play-pause-btn');
     const waveform = document.getElementById('waveform-bars');
     let musicPlaying = false;
+
+    // روابط المقاطع الحقيقية الخاصة بك (أو روابط استماع مباشرة)
+    const moodTracks = {
+        piano: 'https://youtu.be/ssN7_u08HFY?si=vHUxd4LigQT04T78.mp3',
+        violin: 'https://youtu.be/LaVPQe8Zf9o?si=MDHfx7Njqle9vsDL.mp3',
+        ambient: 'https://youtu.be/-PlJnCb-9gI?si=yGi16QU8-JePcMXV.mp3'
+    }; 
+    let currentMood = 'piano';
+
     function setMusicPlaying(playing) {
         musicPlaying = playing;
         if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
         if (waveform) waveform.classList.toggle('playing', playing);
+
+        if (playing) {
+           if (!backgroundAudio.src) {
+                backgroundAudio.src = moodTracks[currentMood];
+            }
+            backgroundAudio.play().catch(e => console.log("Audio play blocked by browser policy"));
+        } else {
+            backgroundAudio.pause();
+        }
     }
-    if (playPauseBtn) playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
     document.querySelectorAll('.mood-preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
             btn.classList.add('active');
+            currentMood = btn.dataset.mood;
+            backgroundAudio.src = moodTracks[currentMood];
+
             const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
             const title = document.getElementById('current-track-title');
-            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
-            setMusicPlaying(false);
+            if (title) title.textContent = moodNames[currentMood] || btn.textContent.trim();
+
+            setMusicPlaying(true); // تشغيل تلقائي عند اختيار المود
         });
     });
     const autoAmbientToggle = document.getElementById('auto-ambient-toggle');

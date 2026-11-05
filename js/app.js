@@ -171,50 +171,36 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateRealWeather, 1800000);
 
 
-    // --- Music controls: responsive UI state (streaming provider hookup is separate) ---
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const waveform = document.getElementById('waveform-bars');
-    let musicPlaying = false;
-
-    // روابط المقاطع الحقيقية الخاصة بك (أو روابط استماع مباشرة)
-    const moodTracks = {
-        piano: 'https://youtu.be/ssN7_u08HFY?si=vHUxd4LigQT04T78.mp3',
-        violin: 'https://youtu.be/LaVPQe8Zf9o?si=MDHfx7Njqle9vsDL.mp3',
-        ambient: 'https://youtu.be/-PlJnCb-9gI?si=yGi16QU8-JePcMXV.mp3'
-    }; 
-    let currentMood = 'piano';
-
-    function setMusicPlaying(playing) {
-        musicPlaying = playing;
-        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
-        if (waveform) waveform.classList.toggle('playing', playing);
-
-        if (playing) {
-           if (!backgroundAudio.src) {
-                backgroundAudio.src = moodTracks[currentMood];
-            }
-            backgroundAudio.play().catch(e => console.log("Audio play blocked by browser policy"));
-        } else {
-            backgroundAudio.pause();
-        }
-    }
-
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
-    }
+    // --- Music & Video Cards Integration (Independent YouTube Players) ---
+    const musicCardViewport = document.getElementById('music-card-viewport'); // المربع الذي يحتوي على الـ iframe داخل البطاقة
+    
+    // روابط يوتيوب الخاصة بالأزرار الثلاثة (قم بتغيير الـ IDs بالروابط التي تريدها لاحقاً)
+    const videoSources = {
+        piano: 'https://www.youtube.com/embed/YOUR_PIANO_VIDEO_ID?autoplay=1&enablejsapi=1',
+        violin: 'https://www.youtube.com/embed/YOUR_VIOLIN_VIDEO_ID?autoplay=1&enablejsapi=1',
+        ambient: 'https://www.youtube.com/embed/YOUR_AMBIENT_VIDEO_ID?autoplay=1&enablejsapi=1'
+    };
 
     document.querySelectorAll('.mood-preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            // إزالة التفعيل عن بقية الأزرار وتفعيل الزر الحالي
             document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
             btn.classList.add('active');
-            currentMood = btn.dataset.mood;
-            backgroundAudio.src = moodTracks[currentMood];
 
-            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
-            const title = document.getElementById('current-track-title');
-            if (title) title.textContent = moodNames[currentMood] || btn.textContent.trim();
+            // معرف المود أو الزر (مثل piano, violin, ambient)
+            const moodKey = btn.dataset.mood || btn.getAttribute('data-mood');
+            const targetUrl = videoSources[moodKey] || videoSources['piano'];
 
-            setMusicPlaying(true); // تشغيل تلقائي عند اختيار المود
+            // تحديث محتوى الـ iframe داخل بطاقة العرض لتشغيل الفيديو الخاص بالزر مباشرة
+            if (musicCardViewport) {
+                musicCardViewport.innerHTML = `
+                    <iframe width="100%" height="100%" 
+                        src="${targetUrl}" 
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen style="border-radius: 12px; pointer-events: auto;">
+                    </iframe>`;
+            }
         });
     });
     const autoAmbientToggle = document.getElementById('auto-ambient-toggle');

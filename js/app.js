@@ -171,31 +171,39 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateRealWeather, 1800000);
 
 
-    // --- Music controls: responsive UI state (streaming provider hookup is separate) ---
+// --- Music controls: YouTube API Integration ---
     const playPauseBtn = document.getElementById('play-pause-btn');
     const waveform = document.getElementById('waveform-bars');
     let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
 
-    // روابط المقاطع الحقيقية الخاصة بك (أو روابط استماع مباشرة)
-    const moodTracks = {
-        piano: 'https://youtu.be/ssN7_u08HFY?si=vHUxd4LigQT04T78.mp3',
-        violin: 'https://youtu.be/LaVPQe8Zf9o?si=MDHfx7Njqle9vsDL.mp3',
-        ambient: 'https://youtu.be/-PlJnCb-9gI?si=yGi16QU8-JePcMXV.mp3'
-    }; 
-    let currentMood = 'piano';
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
 
     function setMusicPlaying(playing) {
         musicPlaying = playing;
         if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
         if (waveform) waveform.classList.toggle('playing', playing);
-
-        if (playing) {
-           if (!backgroundAudio.src) {
-                backgroundAudio.src = moodTracks[currentMood];
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
             }
-            backgroundAudio.play().catch(e => console.log("Audio play blocked by browser policy"));
-        } else {
-            backgroundAudio.pause();
         }
     }
 
@@ -207,14 +215,715 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
             btn.classList.add('active');
-            currentMood = btn.dataset.mood;
-            backgroundAudio.src = moodTracks[currentMood];
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
 
             const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
             const title = document.getElementById('current-track-title');
-            if (title) title.textContent = moodNames[currentMood] || btn.textContent.trim();
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
 
-            setMusicPlaying(true); // تشغيل تلقائي عند اختيار المود
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
+        });
+    });// --- Music controls: YouTube API Integration ---
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const waveform = document.getElementById('waveform-bars');
+    let musicPlaying = false;
+    let ytPlayer;
+    let currentYtId = '4Tr0otuiQuU'; // افتراضي (مقطع البيانو الأول)
+
+    // هذه الدالة يقوم يوتيوب باستدعائها تلقائياً عند تحميل المكتبة
+    window.onYouTubeIframeAPIReady = function() {
+        ytPlayer = new YT.Player('youtube-player-container', {
+            height: '0',
+            width: '0',
+            videoId: currentYtId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': currentYtId
+            }
+        });
+    };
+
+    function setMusicPlaying(playing) {
+        musicPlaying = playing;
+        if (playPauseBtn) playPauseBtn.textContent = playing ? 'Ⅱ' : '▶';
+        if (waveform) waveform.classList.toggle('playing', playing);
+        
+        if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            if (playing) {
+                ytPlayer.playVideo();
+            } else {
+                ytPlayer.pauseVideo();
+            }
+        }
+    }
+
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => setMusicPlaying(!musicPlaying));
+    }
+
+    document.querySelectorAll('.mood-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-preset-btn').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // جلب معرف اليوتيوب الخاص بالزر من خاصية data-yt الموجودة في الـ HTML لديك
+            const ytId = btn.getAttribute('data-yt');
+            if (ytId && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+                currentYtId = ytId;
+                ytPlayer.loadVideoById(currentYtId);
+            }
+
+            const moodNames = { piano: 'Cinematic Piano & Solitude', violin: 'Cinematic Violin', ambient: 'Deep Oriental Ambient' };
+            const title = document.getElementById('current-track-title');
+            if (title) title.textContent = moodNames[btn.dataset.mood] || btn.textContent.trim();
+            
+            setMusicPlaying(true);
         });
     });
     const autoAmbientToggle = document.getElementById('auto-ambient-toggle');

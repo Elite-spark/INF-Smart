@@ -176,9 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // روابط يوتيوب الخاصة بالأزرار الثلاثة (قم بتغيير الـ IDs بالروابط التي تريدها لاحقاً)
     const videoSources = {
-        piano: 'https://www.youtube.com/embed/vHUxd4LigQT04T78?autoplay=1&enablejsapi=1',
+        piano: 'https://www.youtube.com/embed/LaVPQe8Zf9o?si=Y-fJipGwPr5JYLsF?autoplay=1&enablejsapi=1',
         violin: 'https://www.youtube.com/embed/KJSnjaeZdNk?si=URfbY9rQ3bjvgVbL?autoplay=1&enablejsapi=1',
-        ambient: 'https://www.youtube.com/embed/yGi16QU8-JePcMXV?autoplay=1&enablejsapi=1'
+        ambient: 'https://www.youtube.com/embed/-PlJnCb-9gI?si=q35_6uC8WGvJmcfB?autoplay=1&enablejsapi=1'
     };
 
     document.querySelectorAll('.mood-preset-btn').forEach(btn => {

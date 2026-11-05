@@ -361,47 +361,35 @@
 
                     <div class="music-bento-grid">
                         <!-- Left Major Card: Active Audio Deck & Refined Waveform -->
-                        <div class="music-card main-player-card">
-                            <div class="player-header">
-                                <div class="album-art-box">
-                                    <span class="vinyl-icon"><i data-lucide="disc-3"></i></span>
-                                </div>
-                                <div class="track-info">
-                                    <span class="track-kicker"><i></i> NOW PLAYING</span>
-                                    <h4 id="current-track-title">Cinematic Piano & Solitude</h4>
-                                    <span id="current-artist-name">Music AI Studio</span>
-                                    <div class="track-meta"><span>LOSSLESS AUDIO</span><span>·</span><span>SPATIAL SOUND</span></div>
-                                </div>
-                            </div>
+<!-- Left Major Card: Independent YouTube Video Deck & Smooth Waveform -->
+<div class="music-card main-player-card">
+    <div class="player-header" style="flex-direction: column; align-items: stretch; padding: 0; border: none;">
+        
+        <!-- YouTube Embedded Video Viewport (Replaces old album art & titles) -->
+        <div id="music-card-viewport" style="width: 1000%; height: 210px; border-radius: 18px; overflow: hidden; background: #0a0c10; border: 1px solid var(--line);">
+            <iframe width="100%" height="100%" 
+                src="https://www.youtube.com/embed/4Tr0otuiQuU?enablejsapi=1" 
+                title="INF_Smart Cinematic Player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen style="border-radius: 18px; pointer-events: auto;">
+            </iframe>
+        </div>
 
-                            <div class="player-progress-wrap">
-                                <div class="player-progress-track"><span class="player-progress-fill"></span><span class="player-progress-knob"></span></div>
-                                <div class="player-time-row"><span>02:18</span><span>05:42</span></div>
-                            </div>
-                            <!-- Refined Fine Waveform Bars -->
-                            <div class="audio-waveform-container" id="waveform-bars">
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                            </div>
+    </div>
 
-                            <!-- Hidden YouTube Iframe for Real Audio Streaming -->
-                            <div id="youtube-player-container" style="display:none;"></div>
+    <!-- Continuous Ambient Waveform (Non-Music Reactive, smooth animation) -->
+    <div class="audio-waveform-container playing" id="waveform-bars" style="margin-top: 10px;">
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+    </div>
 
-                            <!-- Player Controls -->
-                            <div class="player-controls-row">
-                                <button class="player-ctrl-btn" id="prev-track-btn" title="Previous"><i data-lucide="skip-back"></i></button>
-                                <button class="player-ctrl-btn play-main-btn" id="play-pause-btn" title="Play / Pause"><i data-lucide="play"></i></button>
-                                <button class="player-ctrl-btn" id="next-track-btn" title="Next"><i data-lucide="skip-forward"></i></button>
-                                <div class="volume-slider-box">
-                                    <span class="volume-icon"><i data-lucide="volume-2"></i></span>
-                                    <input type="range" min="0" max="100" value="75" class="mini-slider volume-slider" id="volume-range">
-                                </div>
-                            </div>
-                        </div>
+    <!-- Hidden YouTube Container for API Safety -->
+    <div id="youtube-player-container" style="display:none;"></div>
+</div>
 
                         <!-- Right Column Container -->
                         <div class="music-right-column">

@@ -153,3 +153,27 @@ body[data-blur-level="clear"]{--glass-blur:3px;--glass-saturate:125%}
 .nav-dock-wrapper:not(.collapsed) .inf-nav-bar{visibility:visible;opacity:1;transition:opacity .22s ease .12s,visibility .22s ease .12s}
 .nav-toggle-btn{z-index:2;flex:0 0 auto}
 @media(max-width:720px){.nav-dock-wrapper.collapsed{transform:translateX(calc(-100% - 7px))}}
+/* Smooth independent ambient waveform animation */
+.audio-waveform-container.playing .wave-bar {
+    animation: ambientWave 1.4s ease-in-out infinite alternate !important;
+}
+
+.audio-waveform-container.playing .wave-bar:nth-child(odd) {
+    animation-duration: 1.1s;
+}
+
+.audio-waveform-container.playing .wave-bar:nth-child(3n) {
+    animation-delay: -0.2s;
+    --h: 75%;
+}
+
+.audio-waveform-container.playing .wave-bar:nth-child(4n) {
+    animation-delay: -0.5s;
+    --h: 40%;
+}
+
+@keyframes ambientWave {
+    0% { transform: scaleY(0.3); opacity: 0.4; }
+    50% { transform: scaleY(0.9); opacity: 0.9; }
+    100% { transform: scaleY(0.4); opacity: 0.5; }
+}
